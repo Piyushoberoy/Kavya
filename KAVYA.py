@@ -5,11 +5,15 @@ import datetime
 import webbrowser
 import urllib
 import os
+import mysql.connector as ms
 
 engine = pyttsx3.init('sapi5')
 voices=engine.getProperty('voices')
 engine.setProperty('voice',voices[1].id)
 engine.setProperty('rate', 125)
+
+setup=ms.connect(host='localhost',user='root',passwd='1234',database='KAVYA')
+c=setup.cursor()
 
 def say(audio):
     engine.say(audio)
@@ -61,6 +65,41 @@ def wishme():
         say('Good Evening sir')
     else:
         say('Good Night. Sweet dreams sir.')
+
+def storage():
+    say("Please tell details of person who's contact you wanted to feed, when I ask you about that particular field.")
+    storage1()
+
+def storage1():
+    query = user().lower()
+    if 'name' in query:
+        say("Enter name of person.")
+        N=input("NAME:")
+        storage1()
+    elif 'phone number' in query or 'number' in query:
+        say("What is phone number of person?")
+        p=int(input("PHONE NUMBER:"))
+        storage1()
+    elif 'address' in query:
+        say("Now enter address of that person.")
+        a=input("ADDRESS:")
+        storage1()
+    elif 'email id' in query or 'email' in query:
+        say("Lastly, enter person's email id.")
+        ei=input("EMAIL ID:")
+        storage1()
+    else:
+        say("Do you wan't to add more details of the person?")
+        query = user().lower()
+        if 'yes' in query or 'yep' in query or 'ya' in query or 'haa' in query:
+            say("Tell me more details.")
+            storage1()
+        else:
+            say("I have saved your earlier details.")
+            main()
+    d="INSERT INTO CONTACT(S_NO,NAME,PHONE_NUMBER,ADDRESS,EMAIL_ID) VALUES('{}',{},'{}','{}')".format(N,p,a,ei)
+    c.execute(d)
+    setup.commit()
 
 def web():
     say('Please tell website name which you want to search')
@@ -193,6 +232,8 @@ def main():
                     time.sleep(t)
             elif 'help' in query:
                 help1()
+            elif 'store' in query:
+                storage()
             else:
                 say('Any more questions.')
                 main()
@@ -200,6 +241,5 @@ def main():
 if __name__ == "__main__":
     wishme()
     say('How I can help you?')
-    say('hour honest')
     main()
 
