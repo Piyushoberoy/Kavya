@@ -101,6 +101,54 @@ def storage1():
     c.execute(d)
     setup.commit()
 
+def Open_File():
+    c.execute("Select * from files")
+    d=c.fetchall()
+    x=input("Enter folder name: ")
+    l=[]
+    print(d)
+    X=c.rowcount
+
+    #Store each element of sql table in a list.
+    for row in range(0,X):
+        for col in d[row]:
+            l.append(col)
+
+    L=len(l)
+    print(l)
+
+    #To retrive particular folder path.
+    for a in range(0,L):
+        if x==l[a]:
+            Z=l[a+1]
+            print('Mission possible')
+            os.startfile(Z)
+
+'''
+def files():
+    say("Please tell me which file you wan't to open?")
+    query=user().lower()
+    if 'cu' in query:
+        dir_f1="D:\\PIYUSH\\CU.docx"
+        os.startfile(dir_f1)
+    else:
+        say("Your file is not there.")
+
+def folders():
+    say("Please tell me which folder you wan't to open?")
+    query = user().lower()
+    if 'Piyush' in query:
+        dir_F1="D:\\PIYUSH"
+        os.startfile(dir_F1)
+    else:
+        say("Your folder is not there. Do you wan't me to create it for you?")
+        query=user().lower()
+        #if 'yes' in query or 'ya' in query:
+            #makefolder()
+        #else:
+        #    say('Okay! I will not create it.')
+        #    main()
+'''
 def web():
     say('Please tell website name which you want to search')
     query = user().lower()
@@ -127,7 +175,7 @@ def web():
                 web()
 
 def apps():
-    say("Please tell app name which you wan't to open.")
+    say("Please tell app\folder\file name which you wan't to open.")
     query=user().lower()
     if 'chrome' in query:
         say("Openning settings..")
@@ -149,6 +197,8 @@ def apps():
         say("Openning settings..")
         dir6="%windir%\System32\Control.exe"
         os.startfile(dir6)
+    elif 'folder' in query:
+        Open_File()
     else:
         say("Your application is not in lapi. If you need it then you have to install it. Can I do this for you? Say yes or no.")
         query=user().lower()
